@@ -1,1 +1,46 @@
 # FUM-Election with Docker swarm
+# 1.configure Docker swarm
+first step is installing docker and virtualbox in ubuntu and use them in project.
+in second step we configure swarm cluster for election portals consist of one manager node as LoadBalancing and two wrkers as election portals.
+```
+docker-machine create --driver virtualbox manager
+docker-machine create --driver virtualbox worker1
+docker-machine create --driver virtualbox worker2
+
+```
+after run above commands, with docker-machine ls we can findout managers and workers IP's on the network.
+with below command we can goto manager node and recieve tokens for joining workers to the manager
+```
+docker-machine ssh manager
+swarm init --advertise-addr [manager node IP]
+
+```
+with below commands we can goto worker1 and worker2 then add workers to manager with swarm join command
+```
+docker-machine ssh worker1
+docker swarm join --token SWMTKN-1-46kvmprfpbo03dofelt1foqnvks9keymweludtx8mej0ijhu77-1ahzn5au230kdmep8qmo79pwr 192.168.99.124:2377
+docker-machine ssh worker2
+docker swarm join --token SWMTKN-1-46kvmprfpbo03dofelt1foqnvks9keymweludtx8mej0ijhu77-1ahzn5au230kdmep8qmo79pwr 192.168.99.124:2377
+
+```
+add below command to create 2 replicas from php:7.2-apache service that run on the workers node
+attention! difference between replicated and global in --mode:in global mode, each service run in the any active workers and its impossible to run more than one service on the worker(x) whereas in replicas mode its may happen
+```
+docker service create --name swarm-nodes --publish 8087:80 --mode global php:7.2-apache
+
+```
+for access to bash of wokers or managers, must run following command:
+```
+docker exec -ti "container id of nodes" bash
+
+```
+in this directory we should create index.php file and write codes.
+
+in order to manager node only have LoadBalancer role,we must run following code in manager:
+```
+docker node update --availaibility drain manager
+
+```
+# 2.Election Portal code's in workers
+
+
