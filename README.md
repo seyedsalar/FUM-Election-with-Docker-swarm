@@ -42,5 +42,5 @@ docker node update --availaibility drain manager
 
 ```
 # 2.Election Portal code's in workers
-
-
+After login, users will be redirected to the manager. manager conducts users to workers nodest.the worker nodes show election portal to users.
+before each step 
