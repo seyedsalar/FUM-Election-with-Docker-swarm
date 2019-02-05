@@ -43,4 +43,19 @@ docker node update --availaibility drain manager
 ```
 # 2.Election Portal code's in workers
 After login, users will be redirected to the manager. manager conducts users to workers nodest.the worker nodes show election portal to users.
-before each step 
+We have developed both master and fraud detection container based on slim framework. Slim is a php based framework. By the help of slim, we have developed our web services. 
+After each step we have to send student number and token to the master node in order to send those values to the authentication container. If the authentication container return true, users are allowed to participate in election system. Accordingly, we have three request method:
+```
+http://masterIp:masterPort/slim/public/electionList?studentId={studnetId}&token={token}
+http://masterIp:masterPort/slim/public/subElectionList?studentId={studnetId}&token={token}&id={electionId}
+http://masterIp:masterPort/slim/public/subElectionList?studentId={studnetId}&token={token}&id={subElectionId}
+```
+as I mentioned before, master node developed by slim frame work. In master node we have four routes based on get method.
+The master node must connect to three containers. First one is authentication, second one is fraud detection and the third one is database. Each user is able to participate in election if the fraud detection return true to the master. Each user is able to submit his/her vote just one time.
+Four methods have been developed on master node:
+```
+/slim/public/electionList?studentId={studnetId}&token={token}
+/slim/public/subElectionList?studentId={studnetId}&token={token}&id={electionId}
+/slim/public/votet?studentId={studnetId}&token={token}&id={subElectionId}
+/slim/public/permissible?studentId={studentId}&electionId={electionId}
+```
