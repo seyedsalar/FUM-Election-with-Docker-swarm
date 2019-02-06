@@ -1,0 +1,33 @@
+
+<?
+require_once('main.php');
+
+$Election = $_POST['Election'];
+$db = Db::getInstance();
+foreach ($_POST['field'] as $key=>$invoice)
+
+ {
+
+$db->insert("INSERT INTO sub_election
+( name, election_id) VALUES
+(:name, :election_id)", array(
+
+    'name'        => $invoice,
+    'election_id' => $Election
+
+));
+    
+}
+
+
+
+
+
+$message = _successfully_registered;
+require_once("Election_domain.php");
+exit;
+?>
+
+
+
+
