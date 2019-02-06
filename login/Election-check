@@ -1,0 +1,21 @@
+<?
+require_once('main.php');
+
+
+$name = $_POST['name'];
+
+$db = Db::getInstance();
+
+
+$db->insert("INSERT INTO election
+( Election_name) VALUES
+(:Election_name)", array(
+
+    'Election_name'        => $name
+
+));
+
+$message = _successfully_registered;
+require_once("Election_domain.php");
+exit;
+?>
