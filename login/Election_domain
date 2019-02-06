@@ -1,0 +1,107 @@
+<? 
+require_once('main.php');
+?>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+    
+
+</head>
+<body>
+
+
+
+<div class="login-wrap">
+	<div class="login-html">
+
+<div class="container">
+	<div class="row">
+
+</br>
+
+        <div class="control-group" id="fields">
+            <label class="control-label" for="field1">گزینه های انتخابات را وارد کنید</label>
+            <div class="controls"> 
+                <form role="form" action="Election_Domain-check.php" method="post">
+
+        <div class="btn-group show-on-hover">
+
+<select name="Election">
+
+            <?
+                $db = Db::getInstance();
+                $records = $db->query("SELECT * FROM `election` WHERE 1");
+                foreach ($records as $key => $value) 
+
+                {
+                    
+                    echo '<option value="' . $value['Id'] .'">' . $value['Election_name'] .'</option>  ';       
+                }
+              
+            ?>
+
+
+</select>
+
+        </div>
+     <input type="submit" name="submit" class="btn btn-success btn-md" value="افزودن">
+                    <div class="entry input-group col-xs-3">
+                        <input class="form-control" name="field[]" type="text" placeholder="در اینجا بنویسید" />
+                    	<span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="fa fa-plus fs-2x"></span>
+                            </button>
+                        </span>
+                    </div>
+        
+
+                </form>
+            <br>
+            <small>کلید <span class="fa fa-plus"></span> را برای افزودن بزنید</small>
+            </div>
+        </div>
+	</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+
+<script>
+
+
+$(function()
+{
+    $(document).on('click', '.btn-add', function(e)
+    {
+        e.preventDefault();
+
+        var controlForm = $('.controls form:first'),
+            currentEntry = $(this).parents('.entry:first'),
+            newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+        newEntry.find('input').val('');
+        controlForm.find('.entry:not(:last) .btn-add')
+            .removeClass('btn-add').addClass('btn-remove')
+            .removeClass('btn-success').addClass('btn-danger')
+            .html('<span class="fa fa-minus"></span>');
+    }).on('click', '.btn-remove', function(e)
+    {
+		$(this).parents('.entry:first').remove();
+
+		e.preventDefault();
+		return false;
+	});
+});
+
+
+
+</script>
